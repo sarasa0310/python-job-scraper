@@ -25,7 +25,7 @@ def get_page_count(keyword):
 
 def extract_indeed_jobs(keyword):
     page_count = get_page_count(keyword)  # 해당 keyword의 페이지 개수를 가져온다
-    print("Found", page_count, "pages")
+    print("Found", page_count, "pages on indeed.com")
 
     results = []  # 가공한 job_data를 추가할 빈 리스트
 
@@ -50,8 +50,8 @@ def extract_indeed_jobs(keyword):
                 location = job.find("div", class_="companyLocation")
 
                 job_data = {
-                    "position": position.rstrip("의 전체 세부 정보"),
-                    "company": company.string,
+                    "position": position.rstrip("의 전체 세부 정보").replace(",", " "),  # .csv 파일에 저장할 것이므로 콤마를 공백으로 대치
+                    "company": company.string.replace(",", " "),
                     "location": location.string,
                     "link": f"https://kr.indeed.com{link}"
                 }

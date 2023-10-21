@@ -4,8 +4,10 @@ from bs4 import BeautifulSoup
 
 def extract_wwr_jobs(keyword):
     base_url = "https://weworkremotely.com/remote-jobs/search?term="
+    final_url = f"{base_url}{keyword}"
+    print(f"Requesting -> {final_url}")
 
-    response = get(f"{base_url}{keyword}")
+    response = get(final_url)
 
     if response.status_code != 200:
         print("Can't get response!")
@@ -29,10 +31,10 @@ def extract_wwr_jobs(keyword):
                 link = anchor["href"]
 
                 job_data = {
-                    "position": title.string,
-                    "company_name": company.string,
-                    "job_type": job_type.string,
-                    "region": region.string,
+                    "position": title.string.replace(",", " "),  # .csv 파일에 저장할 것이므로 콤마를 공백으로 대치
+                    "company": company.string.replace(",", " "),
+                    # "job_type": job_type.string,
+                    "location": region.string.replace(",", " "),
                     "link": f"https://weworkremotely.com{link}"
                 }
                 results.append(job_data)
