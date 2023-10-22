@@ -17,7 +17,7 @@ def home():
 def search():
     keyword = request.args.get("keyword")  # 요청 파라미터 가져오기
 
-    if keyword is None:
+    if not keyword:  # keyword가 None이거나 빈 문자열인 경우 홈 페이지로 리다이랙트
         return redirect("/")
 
     if keyword in cache:
@@ -37,7 +37,7 @@ def export():
     keyword = request.args.get("keyword")
 
     # 예외 리다이렉트
-    if keyword is None:
+    if not keyword:  # keyword가 None이거나 빈 문자열인 경우 홈 페이지로 리다이랙트
         return redirect("/")
     if keyword not in cache:
         return redirect(f"/search?keyword={keyword}")
